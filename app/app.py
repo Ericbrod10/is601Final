@@ -1,9 +1,15 @@
 from typing import List, Dict
+
+import pytz
 import simplejson as json
 from flask import Flask, request, Response, redirect
 from flask import render_template
+from flask import url_for, flash, make_response
 from flaskext.mysql import MySQL
 from pymysql.cursors import DictCursor
+import secrets
+import datetime
+
 
 app = Flask(__name__)
 mysql = MySQL(cursorclass=DictCursor)
@@ -14,7 +20,7 @@ app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
 app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_DB'] = 'CheckInData'
 mysql.init_app(app)
-
+eastern = pytz.timezone("US/Eastern")
 
 @app.route('/', methods=['GET'])
 def index():
@@ -22,5 +28,75 @@ def index():
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM LogTable')
     result = cursor.fetchall()
-    return render_template('index.html', title='Home', user=user, zillow=result)
+    print(result)
+    return render_template('index.html', title='Home', user=user, Logs=result)
 
+
+@app.route('/CheckIn', methods=['GET'])
+def form_CheckIn_get():
+    if not request.cookies.get('CheckInCookie'):
+        res = make_response(render_template('new.html', title='Check In'))
+        GenCookie = secrets.token_urlsafe(32)
+        res.set_cookie('CheckInCookie', GenCookie, max_age=60*60*24*365*2)
+    else:
+        cookie = request.cookies.get('CheckInCookie')
+        res = make_response(render_template('new.html', title='Check In', cookie=cookie))
+
+    return res
+
+
+@app.route('/CheckIn', methods=['POST'])
+def CheckIn_post():
+    cursor = mysql.get_db().cursor()
+
+    GenCookie = request.cookies.get('CheckInCookie')
+    # Update Input
+    CheckTime = datetime.datetime.now(tz=eastern).strftime('%Y-%m-%d %H:%M:%S')
+    inputData = (request.form.get('FirstName'), request.form.get('LastName'),
+                 request.form.get('PhoneNumber'), request.form.get('Reason'), GenCookie, CheckTime)
+    # Update Insert
+    sql_insert_query = """INSERT INTO LogTable (FirstName, LastName, PhoneNumber, ReasonForVisit, LoginCookieID, CheckInTime) VALUES (%s, %s,%s, %s, %s, %s) """
+    cursor.execute(sql_insert_query, inputData)
+    mysql.get_db().commit()
+    return redirect("/", code=302)
+
+
+@app.route('/CheckOut', methods=['GET'])
+def form_CheckOut_get():
+    cookie = request.cookies.get('CheckInCookie')
+    return render_template('CheckOut.html', title='Check Out', cookie=cookie)
+
+
+@app.route('/CheckOut', methods=['POST'])
+def CheckOut_post():
+    cursor = mysql.get_db().cursor()
+    GenCookie = request.cookies.get('CheckInCookie')
+    # Update Input
+    CheckTime = datetime.datetime.now(tz=eastern).strftime('%Y-%m-%d %H:%M:%S')
+    inputData = (CheckTime, GenCookie)
+    sql_update_query = """UPDATE LogTable l SET l.CheckOutTime = %s WHERE l.LoginCookieID = %s """
+    cursor.execute(sql_update_query, inputData)
+    mysql.get_db().commit()
+    # res = make_response("Cookie Removed")
+    # request.cookies.update('CheckInCookie', GenCookie, max_age=0)
+    # res.set_cookie('CheckInCookie', GenCookie, max_age=0)
+    response = make_response(redirect('/'))
+    response.delete_cookie('CheckInCookie')
+    return response
+
+
+'''@app.route('/delete-cookie')
+def delete_cookie():
+    if request.cookies.get('CheckInCookie'):
+        res = make_response("Setting a cookie")
+        GenCookie = secrets.token_urlsafe(32)
+        res.set_cookie('CheckInCookie', GenCookie, expires=0)
+    else:
+        res = make_response("Value of cookie foo is {}".format(request.cookies.get('CheckInCookie')))
+    res = make_response("Cookie Removed")
+    #render_template('index.html', title='Processing')
+    return redirect("/", code=302, co)
+'''
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
