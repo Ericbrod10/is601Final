@@ -7,7 +7,7 @@
     {% if cookie %}
     <h2>You have already Checked-in to this location.</h2>
 
-    <h4>Previous Check-ins:</h4>
+    <h4>Previous Check-in:</h4>
     <table class="table">
         <thead>
         <tr>
@@ -15,6 +15,7 @@
             <th scope="col">Last Name</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Reason</th>
+            <th scope="col">Check-in Time</th>
         </tr>
         </thead>
         <tbody>
@@ -24,6 +25,7 @@
             <td>{{ i.LastName }}</td>
             <td>{{ i.PhoneNumber }}</td>
             <td>{{ i.ReasonForVisit }}</td>
+            <td>{{ i.CheckInTime }}</td>
         </tr>
         {% endfor %}
         </tbody>
