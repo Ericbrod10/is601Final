@@ -108,9 +108,10 @@ def searchFunction():
     timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')
     timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')
     inputData = (timeIn, timeOut, timeOut, timeIn)
+    print(inputData)
     # cursor.execute('SELECT * FROM LogTable WHERE   ')
-    cursor.execute('SELECT * FROM LogTable WHERE (CheckInTime >= %s AND CheckInTime <= %s) OR (CheckOutTime <= %s '
-                   'AND CheckOutTime >= %s )')
+    searchQuery = """SELECT * FROM LogTable WHERE (CheckInTime >= %s AND CheckInTime <= %s) OR (CheckOutTime <= %s AND CheckOutTime >= %s)"""
+    cursor.execute(searchQuery, inputData)
     result = cursor.fetchall()
     print(result)
     return render_template('search.html', title='Search', user=user, Logs=result)

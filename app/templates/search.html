@@ -1,7 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<form action="/Search" method="GET">
+
+{% if Logs %}
+<h2> Check-ins between Given Time Period</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <!-- <th scope="col">Id</th> -->
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+
+        <th scope="col">Check-in Time</th>
+        <th scope="col">Check-out Time</th>
+        <!-- <th scope="col">Cookie ID</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in Logs %}
+    <tr>
+        <!--  <td><a href="view/{{i.id}}">{{ i.id }}</a></td> -->
+        <td>{{ i.FirstName }}</td>
+        <td>{{ i.LastName }}</td>
+        <td>{{ i.CheckInTime }}</td>
+        <td>{{ i.CheckOutTime }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+
+<form action="/Search" method="POST">
+
     <h2>Please choose your date or time range:</h2>
 
     <!-- If we use separate date and time fields -->
@@ -42,8 +74,12 @@
         </div>
     </div>
     -->
-
     <button type="submit" class="btn btn-success">Search</button>
 </form>
+
+
+{% endif %}
+
+
 
 {% endblock %}
