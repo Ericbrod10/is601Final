@@ -1,8 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <form action="/CheckIn" method="POST">
     {% if cookie %}
-    <h2>You have already Checked In</h2>
+    <h2>You have already Checked-in to this location.</h2>
+
+    <h4>Previous Check-in:</h4>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Phone Number</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Check-in Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in Logs %}
+        <tr>
+            <td>{{ i.FirstName }}</td>
+            <td>{{ i.LastName }}</td>
+            <td>{{ i.PhoneNumber }}</td>
+            <td>{{ i.ReasonForVisit }}</td>
+            <td>{{ i.CheckInTime }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h4>To create a new check-in, please check-out first.</h4>
+
     {% else %}
     <div class="row">
         <div class="col">
@@ -28,8 +55,8 @@
         </div>
     </div>
     <button type="submit" class="btn btn-success">Check In</button>
+    {% endif %}
 
 </form>
-    {% endif %}
 
 {% endblock %}
