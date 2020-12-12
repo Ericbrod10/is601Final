@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<title>New Check-in</title>
+
 <form action="/CheckIn" method="POST">
     {% if cookie %}
     <h2>You have already Checked-in to this location.</h2>
