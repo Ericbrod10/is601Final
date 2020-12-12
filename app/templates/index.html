@@ -1,34 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h2> Latest Check-ins</h2>
-<table class="table">
-    <thead>
-    <tr>
-        <!-- <th scope="col">Id</th> -->
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-        <!-- <th scope="col">Phone Number</th> -->
-        <th scope="col">Reason</th>
-        <th scope="col">Check-in Time</th>
-        <th scope="col">Check-out Time</th>
-        <!-- <th scope="col">Cookie ID</th> -->
-    </tr>
-    </thead>
-    <tbody>
-    {% for i in Logs %}
-    <tr>
-        <!--  <td><a href="view/{{i.id}}">{{ i.id }}</a></td> -->
-        <td>{{ i.FirstName }}</td>
-        <td>{{ i.LastName }}</td>
-        <!--  <td>{{ i.PhoneNumber }}</td> -->
-        <td>{{ i.ReasonForVisit }}</td>
-        <td>{{ i.CheckInTime }}</td>
-        <td>{{ i.CheckOutTime }}</td>
-        <!--  <td>{{ i.LoginCookieID }}</td> -->
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+{% if count == 0 %}
+<h2>No One is currently Checked In to this Building</h2>
+
+{% elif count == 1 %}
+<h2> There is currently {{ count }} Person Checked In to this Building</h2>
+
+{% elif count > 1 %}
+<h2> There are currently {{ count }} People Checked In to this Building</h2>
+
+{% endif %}
 
 {% endblock %}
