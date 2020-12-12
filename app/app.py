@@ -83,7 +83,6 @@ def CheckOut_post():
     response.delete_cookie('CheckInCookie')
     return response
 
-
 '''@app.route('/delete-cookie')
 def delete_cookie():
     if request.cookies.get('CheckInCookie'):
