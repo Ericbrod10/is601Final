@@ -90,21 +90,30 @@ def getPrevious():
     cookie = request.cookies.get('CheckInCookie')
     user = {'username': 'Eric Project'}
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM LogTable WHERE LoginCookieID = '+cookie)
+    cursor.execute('SELECT * FROM LogTable WHERE LoginCookieID = %s') % cookie
     result = cursor.fetchall()
     # print(result)
     return render_template('new.html', title='Check In', user=user, Logs=result)
 
 
 @app.route('/Search', methods=['GET'])
+def form_Search_get():
+    return render_template('search.html', title='Search Times')
+
+
+@app.route('/Search', methods=['POST'])
 def searchFunction():
     user = {'username': 'Eric Project'}
     cursor = mysql.get_db().cursor()
-    inputData = (request.form.get('FirstName'), request.form.get('LastName'),
-                 request.form.get('PhoneNumber'), request.form.get('Reason'))
-    cursor.execute('SELECT * FROM LogTable ')
+    timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')
+    timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')
+    inputData = (timeIn, timeOut, timeOut, timeIn)
+    print(inputData)
+    # cursor.execute('SELECT * FROM LogTable WHERE   ')
+    searchQuery = """SELECT * FROM LogTable WHERE (CheckInTime >= %s AND CheckInTime <= %s) OR (CheckOutTime <= %s AND CheckOutTime >= %s)"""
+    cursor.execute(searchQuery, inputData)
     result = cursor.fetchall()
-    # print(result)
+    print(result)
     return render_template('search.html', title='Search', user=user, Logs=result)
 
 
