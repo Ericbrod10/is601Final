@@ -27,10 +27,10 @@ eastern = pytz.timezone("US/Eastern")
 def index():
     user = {'username': 'Eric Project'}
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM LogTable')
+    cursor.execute('SELECT * FROM LogTable ORDER BY CheckInTime DESC')
     result = cursor.fetchall()
     # print(result)
-    return render_template('new.html', title='Check In', user=user, Logs=result)
+    return render_template('index.html', title='Home', user=user, Logs=result)
 
 
 @app.route('/CheckIn', methods=['GET'])
