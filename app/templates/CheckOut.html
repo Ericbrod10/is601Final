@@ -2,10 +2,10 @@
 {% block content %}
 <form action="/CheckOut" method="POST">
     {% if cookie %}
-    <h2>Do you want to Checkout?</h2>
+    <h2>Do you want to Check-out of this location?</h2>
         <button type="submit" class="btn btn-success">Check Out</button>
     {% else %}
-    <h2> You have to check in before you can check out</h2>
+    <h2> You have to check-in before you can check-out.</h2>
     {% endif %}
 </form>
 
