@@ -15,6 +15,4 @@ CREATE TABLE IF NOT EXISTS LogTable (
 );
 
 INSERT INTO LogTable VALUES
-    (1 ,'Eric', 'Lroderick', '732-555-5555','Shopping','gfhjdsghjfdbhjdsf', NULL, NULL),
-    (2 ,'Eric', 'Broderick', '732-555-5555','Shopping','gfhjdsghjfdbhjdsf', NULL, NULL),
-    (3 ,'Eric', 'Mooderick', '732-555-5555','Shopping','gfhjdsghjfdbhjdsf', NULL, NULL);
+    (1 ,'FnameTest', 'LnameTest', '555-555-5555','Shopping','gfhjdsghjfdbhjdsfdfdfssdf', NULL, NULL);

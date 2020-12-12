@@ -28,7 +28,7 @@ def index():
     cursor = mysql.get_db().cursor()
     cursor.execute('SELECT * FROM LogTable')
     result = cursor.fetchall()
-    print(result)
+    # print(result)
     return render_template('index.html', title='Home', user=user, Logs=result)
 
 
@@ -36,20 +36,17 @@ def index():
 def form_CheckIn_get():
     if not request.cookies.get('CheckInCookie'):
         res = make_response(render_template('new.html', title='Check In'))
-        GenCookie = secrets.token_urlsafe(32)
-        res.set_cookie('CheckInCookie', GenCookie, max_age=60*60*24*365*2)
     else:
         cookie = request.cookies.get('CheckInCookie')
         res = make_response(render_template('new.html', title='Check In', cookie=cookie))
-
     return res
 
 
 @app.route('/CheckIn', methods=['POST'])
 def CheckIn_post():
     cursor = mysql.get_db().cursor()
+    GenCookie = secrets.token_urlsafe(32)
 
-    GenCookie = request.cookies.get('CheckInCookie')
     # Update Input
     CheckTime = datetime.datetime.now(tz=eastern).strftime('%Y-%m-%d %H:%M:%S')
     inputData = (request.form.get('FirstName'), request.form.get('LastName'),
@@ -58,7 +55,9 @@ def CheckIn_post():
     sql_insert_query = """INSERT INTO LogTable (FirstName, LastName, PhoneNumber, ReasonForVisit, LoginCookieID, CheckInTime) VALUES (%s, %s,%s, %s, %s, %s) """
     cursor.execute(sql_insert_query, inputData)
     mysql.get_db().commit()
-    return redirect("/", code=302)
+    res = make_response(redirect('/', code=302))
+    res.set_cookie('CheckInCookie', GenCookie, max_age=60 * 60 * 24 * 365 * 2)
+    return res
 
 
 @app.route('/CheckOut', methods=['GET'])
