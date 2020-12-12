@@ -1,15 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<title>Search</title>
+<form action="/Search" method="GET">
+    <h2>Please choose your date or time range:</h2>
 
-<form action="/CheckOut" method="POST">
-    {% if cookie %}
-    <h2>Do you want to Check-out of this location?</h2>
-        <button type="submit" class="btn btn-success">Check Out</button>
-    {% else %}
-    <h2> You have to check-in before you can check-out.</h2>
-    {% endif %}
+    <div class="row">
+        <div class="col">
+            <label for="timeStart">Date Range Start</label>
+            <input id="timeStart" type="datetime-local" class="form-control" placeholder="2020-01-01T00:00"
+                   name="timeStart">
+        </div>
+        <div class="col">
+            <label for="timeEnd">Date Range End</label>
+            <input id="timeEnd" type="datetime-local" class="form-control" placeholder="2020-12-31T00:00"
+                   name="timeEnd">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Search</button>
 </form>
 
 {% endblock %}

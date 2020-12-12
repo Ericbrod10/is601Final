@@ -22,6 +22,7 @@ app.config['MYSQL_DATABASE_DB'] = 'CheckInData'
 mysql.init_app(app)
 eastern = pytz.timezone("US/Eastern")
 
+
 @app.route('/', methods=['GET'])
 def index():
     user = {'username': 'Eric Project'}
@@ -82,6 +83,30 @@ def CheckOut_post():
     response = make_response(redirect('/'))
     response.delete_cookie('CheckInCookie')
     return response
+
+
+@app.route('/Previous', methods=['GET'])
+def getPrevious():
+    cookie = request.cookies.get('CheckInCookie')
+    user = {'username': 'Eric Project'}
+    cursor = mysql.get_db().cursor()
+    cursor.execute('SELECT * FROM LogTable WHERE LoginCookieID = '+cookie)
+    result = cursor.fetchall()
+    # print(result)
+    return render_template('index.html', title='Home', user=user, Logs=result)
+
+
+@app.route('/Search', methods=['GET'])
+def searchFunction():
+    user = {'username': 'Eric Project'}
+    cursor = mysql.get_db().cursor()
+    inputData = (request.form.get('FirstName'), request.form.get('LastName'),
+                 request.form.get('PhoneNumber'), request.form.get('Reason'))
+    cursor.execute('SELECT * FROM LogTable ')
+    result = cursor.fetchall()
+    # print(result)
+    return render_template('search.html', title='Search', user=user, Logs=result)
+
 
 '''@app.route('/delete-cookie')
 def delete_cookie():
