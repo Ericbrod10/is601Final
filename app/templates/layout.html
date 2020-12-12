@@ -23,10 +23,13 @@
                 <a class="nav-link" href="/">Home Page<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">New Check-in</a>
+                <a class="nav-link" href="/CheckIn">New Check-in</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">Previous Check-ins</a>
+                <a class="nav-link" href="/CheckOut">Check-out</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/"> Previous Check-ins</a>
             </li>
         </ul>
     </div>
@@ -41,7 +44,6 @@
 
 <!--Main Table-->
 <div class="container mt-3">
-    <h2> Latest Check-ins</h2>
     <main role="main" class="container">{% block content %}{% endblock %}</main>
 </div>
 
