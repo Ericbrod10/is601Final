@@ -11,7 +11,7 @@
   
   - The Last page, allows a user to set an Arrival and Departure times which queries the database and will return a list
     of individuals that were checked in within that timeframe. This would be used in the case of someone testing 
-    positive COVID and a list of possible people who they may have come in contact with needs to be compiled. 
+    positive COVID-19 as well as a list of possible people who they may have come in contact with needs to be compiled. 
     
 ## To Run this Web-App, please follow the procedure below:
 
@@ -27,7 +27,7 @@
         ![powershellNavigation](./screenshots/powershell02.PNG)
   
   5) Run the ***docker-compose up*** command. 
-        ![powershellexecute](./screenshots/powershell03.PNG)
+        ![powershellExecute](./screenshots/powershell03.PNG)
   
   6) Assuming all files were copied over correctly, the web-app should now be running.
         ![webappRunning](./screenshots/powershell04.PNG)
