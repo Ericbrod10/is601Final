@@ -5,6 +5,7 @@
     {% if cookie %}
     <h2>You have already Checked-in to this location.</h2>
 
+
     <h4>Previous Check-in:</h4>
     <table class="table">
         <thead>
@@ -28,22 +29,22 @@
         {% endfor %}
         </tbody>
     </table>
-
-    {% else %}
     <h4>To create a new check-in, please check-out first.</h4>
+    {% else %}
+    <h2>Please fill out the information below to check into the building.</h2>
     <div class="row">
         <div class="col">
-            <label for="FirstName">First Name</label>
+            <label for="FirstName">First Name:</label>
             <input id="FirstName" type="text" class="form-control" placeholder="John"
                    name="FirstName" required>
         </div>
         <div class="col">
-            <label for="LastName">Last Name</label>
+            <label for="LastName">Last Name:</label>
             <input id="LastName" type="text" class="form-control" placeholder="Doe"
                    name="LastName" required>
         </div>
         <div class="col">
-            <label for="PhoneNumber">Phone Number</label>
+            <label for="PhoneNumber">Phone Number:</label>
             <input id="PhoneNumber" type="text" class="form-control" placeholder="888-888-8888" name="PhoneNumber"
             required>
         </div>
@@ -51,7 +52,7 @@
 
     <div class="row">
         <div class="col">
-            <label for="Reason">Reason for Visit</label>
+            <label for="Reason">Reason for Visit:</label>
             <input id="Reason" type="text" class="form-control" placeholder="Ex: Workday, Shopping, etc" name="Reason"
             required>
         </div>
