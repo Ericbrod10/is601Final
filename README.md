@@ -22,7 +22,7 @@
   3) Open Windows Powershell or equivalent Command Line tool with Docker command capabilities. 
         ![powershell](./screenshots/powershell01.PNG)
   
-  4) Using the Command Line too, navigate to the file location on the local machine where the application files are stored.
+  4) Using the Command Line tool, navigate to the file location on the local machine where the application files are stored.
         **Example:** cd .\Documents\NJIT\IS601\is601Final\
         ![powershellNavigation](./screenshots/powershell02.PNG)
   
