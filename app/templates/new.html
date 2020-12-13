@@ -45,8 +45,9 @@
         </div>
         <div class="col">
             <label for="PhoneNumber">Phone Number:</label>
-            <input id="PhoneNumber" type="text" class="form-control" placeholder="888-888-8888" name="PhoneNumber"
-            required>
+            <input id="PhoneNumber" type="tel" class="form-control" placeholder="Ex: 888-888-8888 or 8888888888" name="PhoneNumber"
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}|[0-9]{10}|+[0-9]{1}[0-9]{10}|+[0-9]{1}-[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                    required>
         </div>
     </div>
 
