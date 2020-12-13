@@ -23,10 +23,10 @@
         ![powershell](./screenshots/powershell01.PNG)
   
   4) Using the Command Line too, navigate to the file location on the local machine where the application files are stored.
-        **Example:** *cd .\Documents\NJIT\IS601\is601Final\*
+        **Example:** cd .\Documents\NJIT\IS601\is601Final\
         ![powershellNavigation](./screenshots/powershell02.PNG)
   
-  5) Run the *docker-compose up* command. 
+  5) Run the ***docker-compose up*** command. 
         ![powershellexecute](./screenshots/powershell03.PNG)
   
   6) Assuming all files were copied over correctly, the web-app should now be running.
