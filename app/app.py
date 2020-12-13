@@ -112,12 +112,15 @@ def searchFunction():
     inputData = (timeIn, timeOut, timeIn, timeOut)
     print(inputData)
     # cursor.execute('SELECT * FROM LogTable WHERE   ')
-    searchQuery = """SELECT * FROM LogTable WHERE (CheckInTime >= %s AND CheckInTime <= %s) OR 
-                    (CheckOutTime >= %s AND CheckOutTime <= %s )"""
+    searchQuery = """SELECT FirstName, LastName, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTime', 
+                    DATE_FORMAT(CheckOutTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckOutTime' 
+                    FROM LogTable 
+                    WHERE (CheckInTime >= %s AND CheckInTime <= %s) OR (CheckOutTime >= %s AND CheckOutTime <= %s ) 
+                    ORDER BY CheckInTime ASC"""
     cursor.execute(searchQuery, inputData)
     result = cursor.fetchall()
     print(result)
-    return render_template('search.html', title='Search', Logs=result)
+    return render_template('search.html', title='Search Times', Logs=result)
 
 
 '''@app.route('/delete-cookie')
