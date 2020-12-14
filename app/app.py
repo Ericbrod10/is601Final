@@ -10,7 +10,6 @@ from pymysql.cursors import DictCursor
 import secrets
 import datetime
 
-
 app = Flask(__name__)
 mysql = MySQL(cursorclass=DictCursor)
 
@@ -22,23 +21,27 @@ app.config['MYSQL_DATABASE_DB'] = 'CheckInData'
 mysql.init_app(app)
 eastern = pytz.timezone("US/Eastern")
 
+
 @app.route('/', methods=['GET'])
 def index():
-    user = {'username': 'Eric Project'}
     cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM LogTable')
+    cursor.execute('SELECT COUNT(*) AS "People" FROM LogTable WHERE CheckOutTime IS NULL')
     result = cursor.fetchall()
-    # print(result)
-    return render_template('index.html', title='Home', user=user, Logs=result)
+    count = result[0]['People']
+    return render_template('index.html', title='Home', count=count)
 
 
 @app.route('/CheckIn', methods=['GET'])
 def form_CheckIn_get():
+    cursor = mysql.get_db().cursor()
     if not request.cookies.get('CheckInCookie'):
         res = make_response(render_template('new.html', title='Check In'))
     else:
         cookie = request.cookies.get('CheckInCookie')
-        res = make_response(render_template('new.html', title='Check In', cookie=cookie))
+        sql_query = """ SELECT * FROM LogTable WHERE LoginCookieID = %s"""
+        cursor.execute(sql_query, cookie)
+        result = cursor.fetchall()
+        res = make_response(render_template('new.html', title='Check In', cookie=cookie, Logs=result))
     return res
 
 
@@ -82,6 +85,42 @@ def CheckOut_post():
     response = make_response(redirect('/'))
     response.delete_cookie('CheckInCookie')
     return response
+
+
+'''@app.route('/Previous', methods=['GET'])
+def getPrevious():
+    cookie = request.cookies.get('CheckInCookie')
+    user = {'username': 'Eric Project'}
+    cursor = mysql.get_db().cursor()
+    cursor.execute('SELECT * FROM LogTable WHERE LoginCookieID = %s') % cookie
+    result = cursor.fetchall()
+    # print(result)
+    return render_template('new.html', title='Check In', user=user, Logs=result)
+'''
+
+
+@app.route('/Search', methods=['GET'])
+def form_Search_get():
+    return render_template('search.html', title='Search Times')
+
+
+@app.route('/Search', methods=['POST'])
+def searchFunction():
+    cursor = mysql.get_db().cursor()
+    timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')
+    timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')
+    inputData = (timeIn, timeOut, timeIn, timeOut)
+    print(inputData)
+    # cursor.execute('SELECT * FROM LogTable WHERE   ')
+    searchQuery = """SELECT FirstName, LastName, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTime', 
+                    DATE_FORMAT(CheckOutTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckOutTime' 
+                    FROM LogTable 
+                    WHERE (CheckInTime >= %s AND CheckInTime <= %s) OR (CheckOutTime >= %s AND CheckOutTime <= %s ) 
+                    ORDER BY CheckInTime ASC"""
+    cursor.execute(searchQuery, inputData)
+    result = cursor.fetchall()
+    print(result)
+    return render_template('search.html', title='Search Times', Logs=result)
 
 
 '''@app.route('/delete-cookie')
