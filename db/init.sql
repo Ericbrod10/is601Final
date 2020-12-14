@@ -15,4 +15,4 @@ CREATE TABLE IF NOT EXISTS LogTable (
 );
 
 INSERT INTO LogTable VALUES
-    (1 ,'FnameTest', 'LnameTest', '555-555-5555','Shopping','gfhjdsghjfdbhjdsfdfdfssdf', NULL, NULL);
+    (1 ,'FnameTest', 'LnameTest', '555-555-5555','Shopping','Example_Cookie_gfhjdsghjfdbhjdsfdfdfssdf', '2020-12-10 11:18:53', '2020-12-14 12:18:53');
