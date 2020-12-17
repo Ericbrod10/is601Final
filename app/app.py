@@ -38,7 +38,8 @@ def form_CheckIn_get():
         res = make_response(render_template('new.html', title='Check In'))
     else:
         cookie = request.cookies.get('CheckInCookie')
-        sql_query = """ SELECT * FROM LogTable WHERE LoginCookieID = %s"""
+        sql_query = """ SELECT *, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTimeFormatted' FROM 
+        LogTable WHERE LoginCookieID = %s"""
         cursor.execute(sql_query, cookie)
         result = cursor.fetchall()
         res = make_response(render_template('new.html', title='Check In', cookie=cookie, Logs=result))
@@ -87,17 +88,6 @@ def CheckOut_post():
     return response
 
 
-'''@app.route('/Previous', methods=['GET'])
-def getPrevious():
-    cookie = request.cookies.get('CheckInCookie')
-    user = {'username': 'Eric Project'}
-    cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM LogTable WHERE LoginCookieID = %s') % cookie
-    result = cursor.fetchall()
-    # print(result)
-    return render_template('new.html', title='Check In', user=user, Logs=result)
-'''
-
 
 @app.route('/Search', methods=['GET'])
 def form_Search_get():
@@ -119,7 +109,6 @@ def searchFunction():
                     ORDER BY CheckInTime ASC"""
     cursor.execute(searchQuery, inputData)
     result = cursor.fetchall()
-    print(result)
     return render_template('search.html', title='Search Times', Logs=result)
 
 

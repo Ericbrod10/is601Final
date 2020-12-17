@@ -42,11 +42,11 @@
 
 {% else %}
 
-
 <form action="/Search" method="POST">
 
     <h2>Please choose your date or time range:</h2>
     <h3>This will create a list of people who may have come in contact during the given time frame:</h3>
+
     <!-- If we use separate date and time fields -->
     <div class="row">
         <div class="col">
@@ -71,22 +71,11 @@
         </div>
     </div>
 
-    <!-- If we use Datetime
-    <div class="row">
-        <div class="col">
-            <label for="rangeStart">DateTime Range Start</label>
-            <input id="rangeStart" type="datetime-local" class="form-control" placeholder="2020-01-01T00:00"
-                   name="rangeStart">
-        </div>
-        <div class="col">
-            <label for="rangeEnd">DateTime Range End</label>
-            <input id="rangeEnd" type="datetime-local" class="form-control" placeholder="2020-12-31T00:00"
-                   name="rangeEnd">
-        </div>
-    </div>
-    -->
     <button type="submit" class="btn btn-success">Search</button>
 </form>
+    {% if Logs == () %}
+    <h4 style = "color:red;">Your previous search had no results</h4>
+    {% endif %}
 
 
 {% endif %}
