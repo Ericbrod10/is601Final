@@ -38,7 +38,8 @@ def form_CheckIn_get():
         res = make_response(render_template('new.html', title='Check In'))
     else:
         cookie = request.cookies.get('CheckInCookie')
-        sql_query = """ SELECT * FROM LogTable WHERE LoginCookieID = %s"""
+        sql_query = """ SELECT *, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTimeFormatted' FROM 
+        LogTable WHERE LoginCookieID = %s"""
         cursor.execute(sql_query, cookie)
         result = cursor.fetchall()
         res = make_response(render_template('new.html', title='Check In', cookie=cookie, Logs=result))
@@ -87,17 +88,6 @@ def CheckOut_post():
     return response
 
 
-'''@app.route('/Previous', methods=['GET'])
-def getPrevious():
-    cookie = request.cookies.get('CheckInCookie')
-    user = {'username': 'Eric Project'}
-    cursor = mysql.get_db().cursor()
-    cursor.execute('SELECT * FROM LogTable WHERE LoginCookieID = %s') % cookie
-    result = cursor.fetchall()
-    # print(result)
-    return render_template('new.html', title='Check In', user=user, Logs=result)
-'''
-
 
 @app.route('/Search', methods=['GET'])
 def form_Search_get():
@@ -107,10 +97,21 @@ def form_Search_get():
 @app.route('/Search', methods=['POST'])
 def searchFunction():
     cursor = mysql.get_db().cursor()
-    timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')
-    timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')
+    timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')+':00'
+    timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')+':59'
+
+
+    UserTimeIn = datetime.datetime.strptime(timeIn, '%Y-%m-%d %H:%M:%S')
+    UserTimeInReturn = UserTimeIn.strftime("%-I:%M%p")
+    UserDateInReturn = UserTimeIn.strftime("%m/%d/%Y")
+
+    UserTimeOut = datetime.datetime.strptime(timeOut, '%Y-%m-%d %H:%M:%S')
+    UserTimeOutReturn = UserTimeOut.strftime("%-I:%M%p")
+    UserDateOutReturn = UserTimeOut.strftime("%m/%d/%Y")
+
+
+
     inputData = (timeIn, timeOut, timeIn, timeOut)
-    print(inputData)
     # cursor.execute('SELECT * FROM LogTable WHERE   ')
     searchQuery = """SELECT FirstName, LastName, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTime', 
                     DATE_FORMAT(CheckOutTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckOutTime' 
@@ -119,8 +120,8 @@ def searchFunction():
                     ORDER BY CheckInTime ASC"""
     cursor.execute(searchQuery, inputData)
     result = cursor.fetchall()
-    print(result)
-    return render_template('search.html', title='Search Times', Logs=result)
+    return render_template('search.html', title='Search Times', Logs=result, TimeInReturn=UserTimeInReturn,
+                           UserTimeOutReturn=UserTimeOutReturn, UserDateOutReturn=UserDateOutReturn, UserDateInReturn=UserDateInReturn)
 
 
 '''@app.route('/delete-cookie')

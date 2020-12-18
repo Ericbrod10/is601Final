@@ -11,7 +11,7 @@
         **Example:** cd .\Documents\NJIT\IS601\is601Final\
         ![powershellNavigation](./screenshots/powershell02.PNG)
   
-  5) Run the ***docker-compose up*** command. <\br>
+  5) Run the ***docker-compose up*** command.  
         ![powershellExecute](./screenshots/powershell03.PNG)
   
   6) Assuming all files were copied over correctly, the web-app should now be running.
