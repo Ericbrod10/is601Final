@@ -42,7 +42,8 @@
 
 {% else %}
 
-<form action="/Search" method="POST">
+
+<form action="/Search" method="POST" onsubmit = "return myfunction()">
 
     <h2>Please choose your date or time range:</h2>
     <h3>This will create a list of people who may have come in contact during the given time frame:</h3>
@@ -62,17 +63,34 @@
         <div class="col">
             <label for="dateEnd">Date Range End:</label>
             <input id="dateEnd" type="date" class="form-control" placeholder="12/31/2020"
-                   name="dateEnd" min="2020-01-01" max="2021-12-31" required >
+                   name="dateEnd" min="2020-01-01" max="2021-12-31" required>
         </div>
         <div class="col">
             <label for="timeEnd">Time Range End:</label>
             <input id="timeEnd" type="time" class="form-control" placeholder="23:59 PM"
                    name="timeEnd" required>
         </div>
+
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script>
+        function myfunction() {
+            var startDate = document.getElementById("dateStart").value;
+            var endDate = document.getElementById("dateEnd").value;
+            var timeStart = document.getElementById("timeStart").value;
+            var timeEnd = document.getElementById("timeEnd").value;
+            if( startDate > endDate || (startDate == endDate && timeStart > timeEnd)){
+                alert('The End Date and End Time cannot happen before your Start Date and Start Time');
+                return false;
+            } else {
+                return true;
+            }
+        }
+    </script>
 
     <button type="submit" class="btn btn-success">Search</button>
 </form>
+
     {% if Logs == () %}
     <h4 style = "color:red;">Your previous search had no results</h4>
     {% endif %}
