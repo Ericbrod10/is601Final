@@ -2,7 +2,8 @@
 {% block content %}
 
 {% if Logs %}
-<h2> Check-ins between Given Time Period</h2>
+<h2> Check-ins for the date range listed below: </h2>
+<h3>{{ UserDateInReturn }} at {{ TimeInReturn }} - {{ UserDateOutReturn }} at {{ UserTimeOutReturn }}</h3>
 <table class="table">
     <thead>
     <tr>
