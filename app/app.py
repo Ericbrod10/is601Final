@@ -97,8 +97,20 @@ def form_Search_get():
 @app.route('/Search', methods=['POST'])
 def searchFunction():
     cursor = mysql.get_db().cursor()
-    timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')
+    timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')+':00'
     timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')+':59'
+
+
+    UserTimeIn = datetime.datetime.strptime(timeIn, '%Y-%m-%d %H:%M:%S')
+    UserTimeInReturn = UserTimeIn.strftime("%-I:%M%p")
+    UserDateInReturn = UserTimeIn.strftime("%m/%d/%Y")
+
+    UserTimeOut = datetime.datetime.strptime(timeOut, '%Y-%m-%d %H:%M:%S')
+    UserTimeOutReturn = UserTimeOut.strftime("%-I:%M%p")
+    UserDateOutReturn = UserTimeOut.strftime("%m/%d/%Y")
+
+
+
     inputData = (timeIn, timeOut, timeIn, timeOut)
     # cursor.execute('SELECT * FROM LogTable WHERE   ')
     searchQuery = """SELECT FirstName, LastName, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTime', 
@@ -108,7 +120,8 @@ def searchFunction():
                     ORDER BY CheckInTime ASC"""
     cursor.execute(searchQuery, inputData)
     result = cursor.fetchall()
-    return render_template('search.html', title='Search Times', Logs=result)
+    return render_template('search.html', title='Search Times', Logs=result, TimeInReturn=UserTimeInReturn,
+                           UserTimeOutReturn=UserTimeOutReturn, UserDateOutReturn=UserDateOutReturn, UserDateInReturn=UserDateInReturn)
 
 
 '''@app.route('/delete-cookie')
