@@ -98,9 +98,8 @@ def form_Search_get():
 def searchFunction():
     cursor = mysql.get_db().cursor()
     timeIn = request.form.get('dateStart') + ' ' + request.form.get('timeStart')
-    timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')
+    timeOut = request.form.get('dateEnd') + ' ' + request.form.get('timeEnd')+':59'
     inputData = (timeIn, timeOut, timeIn, timeOut)
-    print(inputData)
     # cursor.execute('SELECT * FROM LogTable WHERE   ')
     searchQuery = """SELECT FirstName, LastName, DATE_FORMAT(CheckInTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckInTime', 
                     DATE_FORMAT(CheckOutTime, '%%Y-%%m-%%d %%h:%%i %%p') AS 'CheckOutTime' 
